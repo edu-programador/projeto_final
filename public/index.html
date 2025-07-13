@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne Industries - Sistema de Segurança</title>
+    <!-- Importa o arquivo de estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Importa ícones da Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="batman-bg">
+    <!-- Div para efeito de estrelas no fundo -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Container principal do login -->
+    <div class="login-container">
+        <!-- Formulário de login -->
+        <div class="login-form">
+            <!-- Logo e nome da empresa centralizados -->
+            <div class="logo-box">
+                <span class="bat-symbol">🦇</span>
+                <span class="wayne-title">WAYNE</span>
+            </div>
+            <!-- Subtítulo do sistema -->
+            <h2>Sistema de Segurança de Gotham</h2>
+
+            <!-- Formulário de autenticação -->
+            <form id="loginForm">
+                <!-- Campo de usuário -->
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" placeholder="Nome de Usuário" required>
+                </div>
+                <!-- Campo de senha -->
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Senha" required>
+                </div>
+                <!-- Botão de login -->
+                <button type="submit" class="login-btn">
+                    <span>ACESSAR SISTEMA</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </form>
+
+            <!-- Mensagem de erro de login -->
+            <div id="loginError" class="error-message"></div>
+
+            <!-- Usuários de teste para facilitar a avaliação do sistema -->
+            <div class="test-users">
+                <h3>Usuários de Teste:</h3>
+                <div class="user-info">
+                    <p><strong>admin</strong> / admin123 (Administrador)</p>
+                    <p><strong>gerente</strong> / ger123 (Gerente)</p>
+                    <p><strong>funcionario</strong> / func123 (Funcionário)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skyline de Gotham para efeito visual -->
+        <div class="gotham-skyline">
+            <div class="building building1"></div>
+            <div class="building building2"></div>
+            <div class="building building3"></div>
+            <div class="building building4"></div>
+            <div class="building building5"></div>
+        </div>
+    </div>
+
+    <!-- Importa o script JavaScript principal -->
+    <script src="script.js"></script>
+</body>
+</html>

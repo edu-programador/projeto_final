@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Wayne Industries</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="batman-bg dashboard-body">
+    <div class="stars" id="stars"></div>
+
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="bat-symbol-small">🦇</div>
+                <h1>WAYNE INDUSTRIES</h1>
+            </div>
+            <div class="user-section">
+                <span class="welcome-text">Bem-vindo, <span id="userName"></span>!</span>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <button class="nav-btn active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </button>
+            <button class="nav-btn" data-section="recursos">
+                <i class="fas fa-shield-alt"></i> Recursos
+            </button>
+            <button class="nav-btn admin-only" data-section="usuarios">
+                <i class="fas fa-users"></i> Usuários
+            </button>
+            <button class="nav-btn admin-gerente-only" data-section="logs">
+                <i class="fas fa-clipboard-list"></i> Logs
+            </button>
+            <button class="nav-btn admin-only" data-section="inventario">
+                <i class="fas fa-boxes"></i> Inventário
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+
+            <!-- Seção Dashboard -->
+            <div id="dashboard-section" class="section active">
+                <div class="stats-section">
+                    <h2><i class="fas fa-chart-bar"></i> Estatísticas do Sistema</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card clickable" data-filter="todos">
+                            <i class="fas fa-boxes"></i>
+                            <h3>Total de Recursos</h3>
+                            <span id="totalRecursos">0</span>
+                        </div>
+                        <div class="stat-card clickable" data-filter="equipamento">
+                            <i class="fas fa-tools"></i>
+                            <h3>Equipamentos</h3>
+                            <span id="totalEquipamentos">0</span>
+                        </div>
+                        <div class="stat-card clickable" data-filter="veiculo">
+                            <i class="fas fa-car"></i>
+                            <h3>Veículos</h3>
+                            <span id="totalVeiculos">0</span>
+                        </div>
+                        <div class="stat-card clickable" data-filter="dispositivo">
+                            <i class="fas fa-microchip"></i>
+                            <h3>Dispositivos</h3>
+                            <span id="totalDispositivos">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filtered-resources">
+                    <div class="filter-header">
+                        <h3 id="filterTitle">Todos os Recursos</h3>
+                        <button id="clearFilter" class="clear-filter-btn" style="display: none;">
+                            <i class="fas fa-times"></i> Limpar Filtro
+                        </button>
+                    </div>
+                    <div id="filteredRecursos" class="resources-grid"></div>
+                </div>
+            </div>
+
+            <!-- Seção Recursos -->
+            <div id="recursos-section" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-shield-alt"></i> Gestão de Recursos</h2>
+                    <button id="addResourceBtn" class="add-btn">
+                        <i class="fas fa-plus"></i> Adicionar Recurso
+                    </button>
+                </div>
+
+                <div id="addResourceForm" class="resource-form hidden">
+                    <h3 id="formTitle">Adicionar Novo Recurso</h3>
+                    <form id="resourceForm">
+                        <input type="hidden" id="editingId" value="">
+                        <div class="form-group">
+                            <label for="nome">Nome do Recurso:</label>
+                            <input type="text" id="nome" placeholder="Ex: Batmóvel" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo">Tipo:</label>
+                            <select id="tipo" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="equipamento">Equipamento</option>
+                                <option value="veiculo">Veículo</option>
+                                <option value="dispositivo">Dispositivo</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <input type="text" id="status" placeholder="Ex: Operacional, Manutenção" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descricao">Descrição:</label>
+                            <textarea id="descricao" placeholder="Descrição detalhada do recurso"></textarea>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-save"></i> <span id="submitBtnText">Salvar</span>
+                            </button>
+                            <button type="button" id="cancelBtn" class="cancel-btn">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="resources-list">
+                    <div id="recursos" class="resources-grid"></div>
+                </div>
+            </div>
+
+            <!-- Seção Usuários (Admin apenas) -->
+            <div id="usuarios-section" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Gestão de Usuários</h2>
+                    <button id="addUserBtn" class="add-btn">
+                        <i class="fas fa-user-plus"></i> Adicionar Usuário
+                    </button>
+                </div>
+
+                <div id="addUserForm" class="resource-form hidden">
+                    <h3 id="userFormTitle">Adicionar Novo Usuário</h3>
+                    <form id="userForm">
+                        <input type="hidden" id="editingUserId" value="">
+                        <div class="form-group">
+                            <label for="userUsername">Nome de Usuário:</label>
+                            <input type="text" id="userUsername" placeholder="Ex: batman" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userPassword">Senha:</label>
+                            <input type="password" id="userPassword" placeholder="Senha do usuário" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userRole">Nível de Acesso:</label>
+                            <select id="userRole" required>
+                                <option value="">Selecione o nível</option>
+                                <option value="admin">Administrador</option>
+                                <option value="gerente">Gerente</option>
+                                <option value="funcionario">Funcionário</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userName">Nome Completo:</label>
+                            <input type="text" id="userNameField" placeholder="Ex: Bruce Wayne" required>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-save"></i> <span id="userSubmitBtnText">Salvar</span>
+                            </button>
+                            <button type="button" id="cancelUserBtn" class="cancel-btn">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="users-list">
+                    <div id="usuarios" class="resources-grid"></div>
+                </div>
+            </div>
+
+            <!-- Seção Logs (Admin/Gerente) -->
+            <div id="logs-section" class="section">
+                <div class="logs-container">
+                    <div class="logs-tabs">
+                        <button class="tab-btn active" data-tab="entry-exit">
+                            <i class="fas fa-door-open"></i> Entrada/Saída
+                        </button>
+                        <button class="tab-btn" data-tab="access">
+                            <i class="fas fa-sign-in-alt"></i> Acessos
+                        </button>
+                    </div>
+
+                    <!-- Tab Entrada/Saída -->
+                    <div id="entry-exit-tab" class="tab-content active">
+                        <div class="section-header">
+                            <h2><i class="fas fa-door-open"></i> Logs de Entrada/Saída</h2>
+                            <button id="addEntryExitBtn" class="add-btn">
+                                <i class="fas fa-plus"></i> Registrar Movimento
+                            </button>
+                        </div>
+
+                        <div id="addEntryExitForm" class="resource-form hidden">
+                            <h3>Registrar Entrada/Saída</h3>
+                            <form id="entryExitForm">
+                                <div class="form-group">
+                                    <label for="logUserId">Funcionário:</label>
+                                    <select id="logUserId" required>
+                                        <option value="">Selecione o funcionário</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="logVehicleId">Veículo:</label>
+                                    <select id="logVehicleId" required>
+                                        <option value="">Selecione o veículo</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="logAction">Ação:</label>
+                                    <select id="logAction" required>
+                                        <option value="">Selecione a ação</option>
+                                        <option value="entrada">Entrada</option>
+                                        <option value="saida">Saída</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="logNotes">Observações:</label>
+                                    <textarea id="logNotes" placeholder="Detalhes da missão ou atividade"></textarea>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="submit-btn">
+                                        <i class="fas fa-save"></i> Registrar
+                                    </button>
+                                    <button type="button" id="cancelEntryExitBtn" class="cancel-btn">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="entryExitLogs" class="logs-list"></div>
+                    </div>
+
+                    <!-- Tab Acessos -->
+                    <div id="access-tab" class="tab-content">
+                        <div class="section-header">
+                            <h2><i class="fas fa-sign-in-alt"></i> Logs de Acesso ao Sistema</h2>
+                        </div>
+                        <div id="accessLogs" class="logs-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção Inventário (Admin apenas) -->
+            <div id="inventario-section" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-boxes"></i> Controle de Inventário</h2>
+                    <button id="addInventoryBtn" class="add-btn">
+                        <i class="fas fa-plus"></i> Adicionar Item
+                    </button>
+                </div>
+
+                <div id="addInventoryForm" class="resource-form hidden">
+                    <h3 id="inventoryFormTitle">Adicionar Item ao Inventário</h3>
+                    <form id="inventoryForm">
+                        <input type="hidden" id="editingInventoryId" value="">
+                        <div class="form-group">
+                            <label for="itemName">Nome do Item:</label>
+                            <input type="text" id="itemName" placeholder="Ex: Batarangs" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemCategory">Categoria:</label>
+                            <select id="itemCategory" required>
+                                <option value="">Selecione a categoria</option>
+                                <option value="Armas">Armas</option>
+                                <option value="Dispositivos">Dispositivos</option>
+                                <option value="Equipamentos">Equipamentos</option>
+                                <option value="Proteção">Proteção</option>
+                                <option value="Suprimentos">Suprimentos</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemQuantity">Quantidade:</label>
+                            <input type="number" id="itemQuantity" min="0" placeholder="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemMinQuantity">Quantidade Mínima:</label>
+                            <input type="number" id="itemMinQuantity" min="0" placeholder="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemDescription">Descrição:</label>
+                            <textarea id="itemDescription" placeholder="Descrição do item"></textarea>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-save"></i> <span id="inventorySubmitBtnText">Salvar</span>
+                            </button>
+                            <button type="button" id="cancelInventoryBtn" class="cancel-btn">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="inventory-list">
+                    <div id="inventario" class="inventory-grid"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
